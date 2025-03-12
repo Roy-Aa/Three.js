@@ -6,6 +6,8 @@ const renderer = new THREE.WebGLRenderer({ antialias: true});
 renderer.setSize(w, h);
 document.body.appendChild(renderer.domElement);
 
+// Camera controls -->
+
 const fov = 75;
 const aspect = w / h;
 const near = 0.1;
@@ -15,14 +17,20 @@ camera.position.z = 2;
 const scene = new THREE.Scene();
 
 const controls = new OrbitControls(camera, renderer.domElement);
+
+// Camera controls -->
+
 controls.enableDamping = true;
 controls.dampingFactor = 0.03;
 
-const geo = new THREE.IcosahedronGeometry(1.0, 2);
+const geo = new THREE.BoxGeometry(1);
 const mat = new THREE.MeshStandardMaterial({
     color: 0xffffff,
     flatShading: true
 });
+
+// Mesh om het object heen -->
+
 const mesh = new THREE.Mesh(geo, mat);
 scene.add(mesh);
 
@@ -34,12 +42,19 @@ const wireMat = new THREE.MeshBasicMaterial({
 const wireMesh = new THREE.Mesh(geo, wireMat);
 mesh.add(wireMesh);
 
-const hemiLight = new THREE.HemisphereLight(0x0099ff, 0x990000);
+// Lines around the object -->
+
+// Light controls -->
+
+const hemiLight = new THREE.HemisphereLight(0x00ff99, 0x991100);
 scene.add(hemiLight)
+
+// Light controls -->
 
 function animate( t = 0) {
     requestAnimationFrame(animate);
-    mesh.rotation.y = t * 0.0001;
+    mesh.rotation.y = t * 0.0005;
+    mesh.rotation.x = t * 0.0005;
     renderer.render(scene, camera);
     controls.update();
 }
